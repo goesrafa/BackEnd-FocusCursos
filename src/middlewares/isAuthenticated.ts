@@ -25,6 +25,8 @@ export function isAuthenticated(
            process.env.JWT_SECRET
        )as PayLoad;
 
+       req.user_id = sub;
+
        return next()
 
    } catch (err) {
