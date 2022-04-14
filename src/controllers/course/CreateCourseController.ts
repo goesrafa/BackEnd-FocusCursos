@@ -1,22 +1,29 @@
 import { Request, Response } from "express";
-import {CreateCourseService } from '../../services/course/CreateCourseService'
+import { CreateCourseService } from '../../services/course/CreateCourseService'
 
-class CreateCourseController{
-    async handle(req: Request, res:Response) {
-        const {nameCourse, description, banner, nameTeacher, category_id} = req.body
+class CreateCourseController {
+    async handle(req: Request, res: Response) {
+        const { nameCourse, description, banner, nameTeacher, category_id } = req.body
 
         const createCourseService = new CreateCourseService()
 
-        const course = await createCourseService.execute({
-            nameCourse,
-            description,
-            banner,
-            nameTeacher,
-            category_id
-        })
+        if (!req.file) {
+            throw new Error("Error upload file")
+        } else {
+            const { originalname, filename: banner } = req.file;
 
-        return res.json(course)
+           
+
+            const course = await createCourseService.execute({
+                nameCourse,
+                description,
+                banner,
+                nameTeacher,
+                category_id
+            })
+            return res.json(course)
+        }
 
     }
 }
-export { CreateCourseController}
+export { CreateCourseController }

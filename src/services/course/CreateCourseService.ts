@@ -10,8 +10,21 @@ interface CoursesRequest{
 
 class CreateCourseService{
     async execute({nameCourse, description, banner, nameTeacher, category_id} : CoursesRequest){
-        
-        return {ok:true}
+        const course = await prismaClient.course.create({
+            data:{
+                nameCourse: nameCourse,
+                description:description,
+                banner:banner,
+                nameTeacher:nameTeacher,
+                category_id:category_id
+            },
+            select:{
+                nameCourse:true,
+                description:true,
+                nameTeacher:true
+            }
+        })
+        return course
     }
 }
 
